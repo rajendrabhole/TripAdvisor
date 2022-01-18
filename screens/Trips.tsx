@@ -35,7 +35,6 @@ const Trips: React.FC<void> = () => {
 
     //Managing app state
     const appState = useRef(AppState.currentState);
-    const [appStateVisible, setAppStateVisible] = useState(appState.current);
     const [appForground, setAppForground] = useState(false);
 
   
@@ -47,8 +46,6 @@ const Trips: React.FC<void> = () => {
         }
   
         appState.current = nextAppState;
-        setAppStateVisible(appState.current);
-        console.log("AppState", appState.current);
       });
   
       return () => {
