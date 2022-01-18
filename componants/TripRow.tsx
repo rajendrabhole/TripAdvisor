@@ -9,12 +9,13 @@ export interface CardDetails {
     status: string;
     destination: {};
     callback : Function;
+    isAppforground : boolean;
 }
 
-const TripRow: React.FC<CardDetails> = ({name, startDate, endDate, status, destination, callback}) => {
+const TripRow: React.FC<CardDetails> = ({name, startDate, endDate, status, destination, callback, isAppforground}) => {
   return (
     <View style={Styles.row}>
-        <View style={Styles.container}>
+        <View style={(isAppforground===true && status === 'NON_STRATED')?Styles.highlightedBackgrpund: Styles.container}>
             <TouchableOpacity onPress={() => {callback(destination)}}>
                 <Text style={Styles.cardTitle}>{name}</Text>
                 <Text style={Styles.cardText}>{startDate} - {endDate} </Text>

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, FlatList, ActivityIndicator } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, FlatList, ActivityIndicator, AppState } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from '@react-navigation/native';
 
@@ -10,11 +10,13 @@ const jsonData = require('../asset/trip-list.json');
 
 const Trips: React.FC<void> = () => {
     const navigation = useNavigation();
+    //Load Data in trip list
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(tripDataAction(jsonData));
     }, []);
 
+    //Navigate to detail screen
     const flatlistCallback = (tripInfo: {}): void => {
         navigation.navigate('TipDetails', {
             destination: tripInfo
@@ -22,6 +24,7 @@ const Trips: React.FC<void> = () => {
     };
     const { tripData } = useSelector((state) => state);
 
+    //Before Data loading 
     const [showSpinner, setShowSippner] = useState(true);
 
     useEffect(() => {
@@ -29,6 +32,30 @@ const Trips: React.FC<void> = () => {
             setShowSippner(false)
         }, 2000);
     }, [])
+
+    //Managing app state
+    const appState = useRef(AppState.currentState);
+    const [appStateVisible, setAppStateVisible] = useState(appState.current);
+    const [appForground, setAppForground] = useState(false);
+
+  
+    useEffect(() => {
+      const subscription = AppState.addEventListener("change", nextAppState => {
+        if (appState.current.match(/inactive|background/) && nextAppState === "active"
+        ) {
+            setAppForground(true);
+        }
+  
+        appState.current = nextAppState;
+        setAppStateVisible(appState.current);
+        console.log("AppState", appState.current);
+      });
+  
+      return () => {
+        subscription.remove();
+      };
+    }, []);
+  
 
 
     return (
@@ -46,6 +73,7 @@ const Trips: React.FC<void> = () => {
                         status={item.status}
                         destination={item}
                         callback={flatlistCallback}
+                        isAppforground={appForground}
                     />
                 )}
                 keyExtractor={item => item.id}

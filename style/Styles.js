@@ -32,6 +32,19 @@ const styles = StyleSheet.create({
         backgroundColor : colors.TRIP_CARD_BACKGROUND
     },
 
+    highlightedBackgrpund:{
+        flexDirection : 'column',
+        marginTop :5,
+        marginBottom : 5,
+        marginLeft : 20,
+        marginRight : 20,
+        backgroundColor : '#FFF0ED',
+        borderRadius : 10,
+        borderWidth: 1,
+        borderColor : 'black',
+        backgroundColor : colors.TRIP_CARD_BACKGROUND_HIGHLIGHTED
+    },
+
     cardTitle: {
         fontWeight : 'bold',
         fontSize : 20,
